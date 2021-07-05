@@ -18,7 +18,9 @@ struct AppState: Equatable {
     var selectedTab: AppState.Tab = .home
 
     var webSocketState: WebSocketState
+
     var timelineState: TimelineState
+    
     var accountState: AccountState
 }
 

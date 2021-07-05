@@ -12,12 +12,21 @@ struct AppView: View {
     let store: Store<AppState, AppAction>
 
     init() {
+
+        let initialWebSocketState = WebSocketState()
+
         self.store = Store(
             initialState: AppState(
                 selectedTab: .home,
-                webSocketState: .init(),
-                timelineState: .init(rows: []),
-                accountState: .init(messagesReceived: 0)
+                webSocketState: initialWebSocketState,
+                timelineState: .init(
+                    rows: [],
+                    webSocketState: initialWebSocketState
+                ),
+                accountState: .init(
+                    messagesReceived: 0,
+                    webSocketState: initialWebSocketState
+                )
             ),
             reducer: appReducer,
             environment: AppEnvironment(
