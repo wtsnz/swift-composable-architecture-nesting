@@ -18,8 +18,30 @@ struct AppState: Equatable {
     var selectedTab: AppState.Tab = .home
 
     var webSocketState: WebSocketState
-    var timelineState: TimelineState
-    var accountState: AccountState
+
+    var timelineRows: [TimelineRow] = []
+    var timelineSelectedRowId: Int? = 0
+    var timelineState: TimelineState {
+        get {
+            return TimelineState(
+                rows: webSocketState.lastTenMessages.map { TimelineRow(id: $0.id, title: $0.message) },
+                selectedRowId: timelineSelectedRowId
+            )
+        }
+        set {
+            timelineSelectedRowId = newValue.selectedRowId
+            timelineRows = newValue.rows
+        }
+    }
+
+    var accountState: AccountState {
+        get {
+            AccountState(messagesReceived: webSocketState.messagesReceived)
+        }
+        set {
+            // Nothing to do here as there is no state that we care about being updated.
+        }
+    }
 }
 
 struct AppEnvironment {

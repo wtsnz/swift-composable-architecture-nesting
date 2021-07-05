@@ -15,9 +15,7 @@ struct AppView: View {
         self.store = Store(
             initialState: AppState(
                 selectedTab: .home,
-                webSocketState: .init(),
-                timelineState: .init(rows: []),
-                accountState: .init(messagesReceived: 0)
+                webSocketState: .init()
             ),
             reducer: appReducer,
             environment: AppEnvironment(
