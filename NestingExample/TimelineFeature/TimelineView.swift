@@ -14,6 +14,7 @@ struct TimelineView: View {
     @ObservedObject private var viewStore: ViewStore<ViewState, TimelineAction>
 
     struct ViewState: Equatable {
+        var selectedRowId: Int?
         var rows: [TimelineRow]
     }
 
@@ -22,7 +23,7 @@ struct TimelineView: View {
         self.viewStore = ViewStore(
             self.store.scope(
                 state: {
-                    ViewState(rows: $0.rows)
+                    ViewState(selectedRowId: $0.selectedRowId ,rows: $0.rows)
                 }
             )
         )
@@ -31,10 +32,15 @@ struct TimelineView: View {
     public var body: some View {
         List {
             ForEach(viewStore.rows, id: \.id) { row in
-                HStack {
-                    Text(row.title)
-                    Text("\(row.id)")
-                }
+                Button(action: { viewStore.send(.tappedRow(id: row.id)) }, label: {
+                    HStack {
+                        Text(row.title)
+                        Text("\(row.id)")
+                        if viewStore.selectedRowId == row.id {
+                            Text("⭐️")
+                        }
+                    }
+                })
             }
         }
     }
