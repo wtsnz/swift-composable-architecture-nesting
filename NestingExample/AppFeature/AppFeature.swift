@@ -20,6 +20,33 @@ struct AppState: Equatable {
     var webSocketState: WebSocketState
     var timelineState: TimelineState
     var accountState: AccountState
+
+    var composedAccountState: ComposedAccountState {
+        get {
+            ComposedAccountState(
+                accountState: accountState,
+                webSocketState: webSocketState
+            )
+        }
+        set {
+            accountState = newValue.accountState
+            webSocketState = newValue.webSocketState
+        }
+    }
+
+    var composedTimelineState: ComposedTimelineState {
+        get {
+            ComposedTimelineState(
+                timelineState: timelineState,
+                webSocketState: webSocketState
+            )
+        }
+        set {
+            timelineState = newValue.timelineState
+            webSocketState = newValue.webSocketState
+        }
+    }
+
 }
 
 struct AppEnvironment {
@@ -37,7 +64,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         ),
     timelineReducer
         .pullback(
-            state: \.timelineState,
+            state: \.composedTimelineState,
             action: /AppAction.timeline,
             environment: { env in
                 TimelineEnvironment(
@@ -47,7 +74,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         ),
     accountReducer
         .pullback(
-            state: \.accountState,
+            state: \.composedAccountState,
             action: /AppAction.account,
             environment: { env in
                 AccountEnvironment(

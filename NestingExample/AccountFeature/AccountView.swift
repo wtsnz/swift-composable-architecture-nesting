@@ -10,14 +10,14 @@ import ComposableArchitecture
 
 struct AccountView: View {
 
-    private let store: Store<AccountState, AccountAction>
+    private let store: Store<ComposedAccountState, AccountAction>
     @ObservedObject private var viewStore: ViewStore<ViewState, AccountAction>
 
     struct ViewState: Equatable {
         var messagesReceived: Int
     }
 
-    public init(store: Store<AccountState, AccountAction>) {
+    public init(store: Store<ComposedAccountState, AccountAction>) {
         self.store = store
         self.viewStore = ViewStore(
             self.store.scope(

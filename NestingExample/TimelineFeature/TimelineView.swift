@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct TimelineView: View {
 
-    private let store: Store<TimelineState, TimelineAction>
+    private let store: Store<ComposedTimelineState, TimelineAction>
     @ObservedObject private var viewStore: ViewStore<ViewState, TimelineAction>
 
     struct ViewState: Equatable {
@@ -18,7 +18,7 @@ struct TimelineView: View {
         var rows: [TimelineRow]
     }
 
-    public init(store: Store<TimelineState, TimelineAction>) {
+    public init(store: Store<ComposedTimelineState, TimelineAction>) {
         self.store = store
         self.viewStore = ViewStore(
             self.store.scope(

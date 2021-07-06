@@ -16,8 +16,8 @@ struct AppView: View {
             initialState: AppState(
                 selectedTab: .home,
                 webSocketState: .init(),
-                timelineState: .init(rows: []),
-                accountState: .init(messagesReceived: 0)
+                timelineState: .init(),
+                accountState: .init()
             ),
             reducer: appReducer,
             environment: AppEnvironment(
@@ -36,7 +36,7 @@ struct AppView: View {
                 content:  {
                     TimelineView(
                         store: store.scope(
-                            state: \.timelineState,
+                            state: \.composedTimelineState,
                             action: AppAction.timeline
                         )
                     )
@@ -45,7 +45,7 @@ struct AppView: View {
 
                     AccountView(
                         store: store.scope(
-                            state: \.accountState,
+                            state: \.composedAccountState,
                             action: AppAction.account
                         )
                     )
